@@ -2,8 +2,6 @@ package routes
 
 import (
 	"telo/controllers/agent"
-	"telo/controllers/callback/aggregator/dstgaming"
-	"telo/controllers/callback/aggregator/gamingsoft"
 	"telo/controllers/callback/live_casino/evolutionlive"
 	"telo/controllers/callback/slots/evolutionslot"
 	"telo/controllers/callback/slots/fastspin"
@@ -11,7 +9,6 @@ import (
 	"telo/controllers/callback/slots/pragmatic"
 	"telo/controllers/callback/slots/spadegaming"
 	"telo/controllers/callback/slots/telo"
-	"telo/controllers/callback/sportsbook/saba"
 	"telo/controllers/callback/sportsbook/sbo"
 	"telo/controllers/user"
 	"telo/middlewares"
@@ -67,22 +64,6 @@ func Setup(app *fiber.App) {
 	evolive.Post("/cancel", evolutionlive.CancelHandler)
 	evolive.Post("/sid", evolutionlive.UserHandler)
 
-	//dstgaming
-	dstroute := app.Group("/aggregator/dst-gaming/seamless")
-	dstroute.Post("/getBalance", dstgaming.GetBalanceHandler)
-	dstroute.Post("/bet", dstgaming.BetHandler)
-	dstroute.Post("/settle", dstgaming.SettleHandler)
-	dstroute.Post("/rollback", dstgaming.RollbackHandler)
-	dstroute.Post("/checkRefund", dstgaming.CheckRefundHandler)
-
-	// gamingsoft
-	gsRoute := app.Group("/aggregator/gsc/v1/api/seamless")
-
-	gsRoute.Post("/balance", gamingsoft.BalanceHandler)
-	gsRoute.Post("/withdraw", gamingsoft.WithdrawHandler)
-	gsRoute.Post("/deposit", gamingsoft.DepositHandler)
-	gsRoute.Post("/pushbetdata", gamingsoft.PushBetDataHandler)
-
 	//fs
 	app.Post("/seamless/slot/fastspin", fastspin.GatewayHandler)
 	app.Post("/seamless/slot/spadegaming", spadegaming.GatewayHandler)
@@ -94,16 +75,6 @@ func Setup(app *fiber.App) {
 	psroutes.Get("/refund", playstar.RefundHandler)
 	psroutes.Get("/bonusaward", playstar.BonusAwardHandler)
 	psroutes.Get("/getbalance", playstar.GetBalanceHandler)
-
-	//saba
-	sabaRoutes := app.Group("/seamless/sportsbook/saba")
-	sabaRoutes.Post("/getbalance", saba.GetBalanceHandler)
-	sabaRoutes.Post("/placebet", saba.PlaceBetHandler)
-	sabaRoutes.Post("/confirmbet", saba.ConfirmBetHandler)
-	sabaRoutes.Post("/cancelbet", saba.CancelBetHandler)
-	sabaRoutes.Post("/settle", saba.SettleHandler)
-	sabaRoutes.Post("/resettle", saba.ResettleHandler)
-	sabaRoutes.Post("/unsettle", saba.UnsettleHandler)
 
 	//pragmatic
 	prroutes := app.Group("/seamless/provider/pragmatic/")
